@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/enemy1/enemy_shot.tres.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Sprites/proj3.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 5, 3 )
+
+[node name="enemy_shot" type="Area2D" index="0"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="sprite" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="tmr_free" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 30.0
+one_shot = true
+autostart = true
+
+[node name="tmr_changetexture" type="Timer" parent="." index="3"]
+
+process_mode = 1
+wait_time = 0.05
+one_shot = false
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_allied_shot_body_entered"]
+
+[connection signal="timeout" from="tmr_free" to="." method="_on_tmr_free_timeout"]
+
+[connection signal="timeout" from="tmr_changetexture" to="." method="_on_tmr_changetexture_timeout"]
+
+

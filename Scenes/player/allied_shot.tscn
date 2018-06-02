@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Resources/Sprites/proj2.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "allied_shot"
+script/source = "extends Area2D
+var dano = 1#global.jogador.dano_projetil
+var vetor_direcao = Vector2(1,0)
+var velocidade_maxima = 250
+
+func _ready():
+	self.rotation = vetor_direcao.angle()
+
+func _physics_process(delta): global_translate( vetor_direcao.normalized() * velocidade_maxima * delta)
+
+func _on_allied_shot_body_entered(body):
+	if not body.is_in_group('Jogador'):
+		if body.is_in_group('Inimigo'):
+			body.causar_dano(dano)
+			self.queue_free()
+		else:
+			self.queue_free()
+
+func _on_tmr_free_timeout(): self.queue_free()
+
+
+func _on_allied_shot_area_entered(area):
+	if area.is_in_group('Torreta'):
+		area.recarregar(dano*global.jogador.multiplicador_de_recarga)
+		self.queue_free()
+"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 5, 3 )
+
+[node name="allied_shot" type="Area2D" index="0"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="sprite" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Visibility" ]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="tmr_free" type="Timer" parent="." index="2"]
+
+process_mode = 1
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="." to="." method="_on_allied_shot_area_entered"]
+
+[connection signal="body_entered" from="." to="." method="_on_allied_shot_body_entered"]
+
+[connection signal="timeout" from="tmr_free" to="." method="_on_tmr_free_timeout"]
+
+

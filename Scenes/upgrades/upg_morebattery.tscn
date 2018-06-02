@@ -1,0 +1,188 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Resources/Panels/pause_panel.tres" type="StyleBox" id=1]
+[ext_resource path="res://Resources/Panels/btn_selected.tres" type="StyleBox" id=2]
+[ext_resource path="res://Resources/Panels/btn_normal.tres" type="StyleBox" id=3]
+[ext_resource path="res://Resources/SFX/select.wav" type="AudioStream" id=4]
+[ext_resource path="res://Resources/Fonts/fnt_magodev16.tres" type="DynamicFont" id=5]
+
+[sub_resource type="GDScript" id=1]
+
+resource_local_to_scene = true
+resource_name = "btn_morebattery"
+script/source = "extends Button
+
+func _ready(): set_process(true)
+func _process(delta): if Input.is_action_just_pressed('ui_shoot') and self.has_focus() and global.jogador.dinheiro > int(get_parent().get_node('str_preco').text): ativar()
+func ativar():
+	$snd_buy
+	global.jogador.dinheiro -= int(get_parent().get_node('str_preco').text)
+	get_parent().get_node('str_preco').text = '$' + str(int(round(int(get_parent().get_node('str_preco').text) * 1.25)))
+	upgrade()
+
+func upgrade(): global.jogador.energia_maxima = int(round(global.jogador.energia_maxima * 1.33))"
+_sections_unfolded = [ "Resource" ]
+
+[node name="upg_morebattery" type="PanelContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 122.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/panel = ExtResource( 1 )
+_sections_unfolded = [ "Visibility", "custom_styles" ]
+
+[node name="ctn_margin" type="MarginContainer" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 120.0
+margin_bottom = 37.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_constants/margin_right = 3
+custom_constants/margin_top = 1
+custom_constants/margin_left = 3
+custom_constants/margin_bottom = 1
+_sections_unfolded = [ "Visibility", "custom_constants" ]
+
+[node name="ctn_hbox" type="HBoxContainer" parent="ctn_margin" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 3.0
+margin_top = 1.0
+margin_right = 115.0
+margin_bottom = 34.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="btn_upgrade" type="Button" parent="ctn_margin/ctn_hbox" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 8.0
+margin_right = 2.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 2 )
+custom_styles/focus = ExtResource( 2 )
+custom_styles/normal = ExtResource( 3 )
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+group = null
+flat = false
+align = 1
+script = SubResource( 1 )
+_sections_unfolded = [ "Focus" ]
+
+[node name="snd_buy" type="AudioStreamPlayer" parent="ctn_margin/ctn_hbox/btn_upgrade" index="0"]
+
+stream = ExtResource( 4 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "sfx"
+
+[node name="str_upgrade" type="Label" parent="ctn_margin/ctn_hbox" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 6.0
+margin_right = 85.0
+margin_bottom = 33.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 0.894118, 0.760784, 1 )
+text = "More
+battery"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Size Flags", "custom_colors", "custom_fonts" ]
+
+[node name="str_preco" type="Label" parent="ctn_margin/ctn_hbox" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 89.0
+margin_top = 9.0
+margin_right = 104.0
+margin_bottom = 24.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 1, 0.894118, 0.760784, 1 )
+text = "$10"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Size Flags", "custom_colors", "custom_fonts" ]
+
+[node name="v_separator" type="VSeparator" parent="ctn_margin/ctn_hbox" index="3"]
+
+modulate = Color( 1, 1, 1, 0 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 108.0
+margin_right = 112.0
+margin_bottom = 33.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Visibility" ]
+
+

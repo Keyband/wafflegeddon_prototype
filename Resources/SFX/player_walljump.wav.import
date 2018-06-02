@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/player_walljump.wav-179f2c916a821866490e8f5b3ddcfc2c.sample"
+
+[deps]
+
+source_file="res://Resources/SFX/player_walljump.wav"
+source_md5="4f849a9a2b1e526a934a9cca0c6e0e6c"
+
+dest_files=[ "res://.import/player_walljump.wav-179f2c916a821866490e8f5b3ddcfc2c.sample" ]
+dest_md5="b4ff7b80bd5dfb528109145f9785f799"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

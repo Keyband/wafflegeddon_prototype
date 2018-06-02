@@ -1,0 +1,49 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=3
+
+[application]
+
+config/name="Wafflegeddon"
+run/main_scene="res://Scenes/world.tscn"
+run/low_processor_mode=true
+boot_splash/image="res://Resources/splash.png"
+config/icon="res://Resources/icon.png"
+
+[autoload]
+
+global="*res://Scenes/global.gd"
+
+[display]
+
+window/size/width=160
+window/size/height=144
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[input]
+
+ui_jump=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"unicode":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+ui_shoot=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":88,"unicode":0,"echo":false,"script":null)
+ ]
+ui_debug=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":75,"unicode":0,"echo":false,"script":null)
+ ]
+ui_pause=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777221,"unicode":0,"echo":false,"script":null)
+ ]
+
+[node]
+
+name_casing=2
+
+[rendering]
+
+environment/default_clear_color=Color( 0.258824, 0.160784, 0.211765, 1 )
+environment/default_environment="res://default_env.tres"

@@ -1,0 +1,18 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/UltraSyrup.ogg-67e7cf51a9d114b33226f8c32e77cd10.oggstr"
+
+[deps]
+
+source_file="res://Resources/SFX/UltraSyrup.ogg"
+source_md5="5a9430ed65827eb09635b0fa7bcddddd"
+
+dest_files=[ "res://.import/UltraSyrup.ogg-67e7cf51a9d114b33226f8c32e77cd10.oggstr" ]
+dest_md5="ee5dada8a889058baf411a24361104dd"
+
+[params]
+
+loop=true
+loop_offset=0

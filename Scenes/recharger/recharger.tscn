@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=9]
+
+script/source = "extends Area2D
+
+func _ready(): set_process(true)
+
+func _process(delta): for body in get_overlapping_bodies(): if body.is_in_group('Jogador'): body.energia = lerp(body.energia, body.energia_maxima, 0.2)"
+
+[sub_resource type="RectangleShape2D" id=10]
+
+custom_solver_bias = 0.0
+extents = Vector2( 16, 7 )
+
+[node name="recharger" type="Area2D"]
+
+editor/display_folded = true
+position = Vector2( -13, 79 )
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = SubResource( 9 )
+
+[node name="sprite" type="Sprite" parent="." index="0"]
+
+position = Vector2( -16, -12 )
+scale = Vector2( 0.5, 0.1875 )
+texture = ExtResource( 1 )
+centered = false
+_sections_unfolded = [ "Offset" ]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="." index="1"]
+
+position = Vector2( 0, -5 )
+shape = SubResource( 10 )
+
+[connection signal="body_entered" from="." to="." method="_on_recharger_body_entered"]
+
+

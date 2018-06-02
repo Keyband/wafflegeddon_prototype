@@ -1,0 +1,97 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Resources/Fonts/mago1.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends KinematicBody2D
+
+# class member variables go here, for example:
+# var a = 2
+# var b = \"textvar\"
+
+func _ready(): set_physics_process(true)
+
+func _physics_process(delta):
+	move_and_slide( Vector2(0, 50), Vector2())
+
+
+func _on_area_2d_body_entered(body):
+	if body.is_in_group('Jogador'):
+		body.vida += 1
+		self.queue_free()
+"
+
+[sub_resource type="DynamicFont" id=2]
+
+size = 32
+use_mipmaps = false
+use_filter = false
+extra_spacing_top = -2
+extra_spacing_bottom = -1
+extra_spacing_space = -2
+font_data = ExtResource( 1 )
+_sections_unfolded = [ "Extra Spacing", "Settings" ]
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 9.0306, 8.10435 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 1.0298, 1.12574 )
+
+[node name="heart" type="KinematicBody2D" index="0"]
+
+input_pickable = true
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+script = SubResource( 1 )
+
+[node name="label" type="Label" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -7.0
+margin_top = -14.0
+margin_right = 33.0
+margin_bottom = 9.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = SubResource( 2 )
+text = "_"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "custom_fonts" ]
+
+[node name="area_2d" type="Area2D" parent="." index="1"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="area_2d" index="0"]
+
+shape = SubResource( 3 )
+
+[node name="collision_shape_2d2" type="CollisionShape2D" parent="." index="2"]
+
+shape = SubResource( 4 )
+
+[connection signal="body_entered" from="area_2d" to="." method="_on_area_2d_body_entered"]
+
+

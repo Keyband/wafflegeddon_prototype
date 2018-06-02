@@ -1,0 +1,133 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scenes/turret2/turret_ohko.gd" type="Script" id=1]
+[ext_resource path="res://Resources/Textures/bar_turret_bg.png" type="Texture" id=2]
+[ext_resource path="res://Resources/Textures/bar_turret_fill.png" type="Texture" id=3]
+[ext_resource path="res://Resources/Sprites/megatorreta.png" type="Texture" id=4]
+[ext_resource path="res://Resources/SFX/player_shot.wav" type="AudioStream" id=5]
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends TextureProgress
+var sumir = false
+func _ready(): set_process(true)
+func _process(delta): 
+	print(sumir)
+	max_value = get_parent().energia_maxima
+	value = lerp(value, get_parent().energia, 0.1)
+	
+	if value - get_parent().energia < 0.1: $tmr_sumir.start()
+	else: sumir = false
+	
+	self_modulate.a = lerp(self.modulate.a, 0, 0.05) if sumir == true else lerp(self.modulate.a, 1, 0.2)
+
+func _on_tmr_sumir_timeout(): sumir = true
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 1, 1 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 14, 93 )
+
+[node name="turret" type="Area2D" index="0"]
+
+input_pickable = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="bar_energy" type="TextureProgress" parent="." index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -13.0
+margin_top = -21.0
+margin_right = 27.0
+margin_bottom = 19.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 50.0
+exp_edit = false
+rounded = false
+texture_under = ExtResource( 2 )
+texture_over = null
+texture_progress = ExtResource( 3 )
+radial_fill_degrees = 360.0
+radial_center_offset = Vector2( 0, 0 )
+nine_patch_stretch = false
+script = SubResource( 1 )
+_sections_unfolded = [ "Rect", "Textures" ]
+
+[node name="tmr_sumir" type="Timer" parent="bar_energy" index="0"]
+
+process_mode = 1
+wait_time = 5.0
+one_shot = true
+autostart = false
+
+[node name="sprite" type="Sprite" parent="." index="1"]
+
+texture = ExtResource( 4 )
+offset = Vector2( 0, 6 )
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="." index="2"]
+
+shape = SubResource( 2 )
+
+[node name="range" type="Area2D" parent="." index="3"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="collision_shape_2d" type="CollisionShape2D" parent="range" index="0"]
+
+shape = SubResource( 3 )
+
+[node name="tmr_attack" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = false
+autostart = true
+
+[node name="snd_shot" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = ExtResource( 5 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "sfx"
+
+[connection signal="timeout" from="bar_energy/tmr_sumir" to="bar_energy" method="_on_tmr_sumir_timeout"]
+
+[connection signal="body_entered" from="range" to="." method="_on_range_body_entered"]
+
+[connection signal="timeout" from="tmr_attack" to="." method="_on_tmr_attack_timeout"]
+
+

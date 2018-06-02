@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/select.wav-13495d188f44bc7ce2f4ca705633452d.sample"
+
+[deps]
+
+source_file="res://Resources/SFX/select.wav"
+source_md5="694c2f9ed3482cfaca696bd30d9a26ca"
+
+dest_files=[ "res://.import/select.wav-13495d188f44bc7ce2f4ca705633452d.sample" ]
+dest_md5="c8ffa71bd1b26a2ba75bc86c00d7dade"
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

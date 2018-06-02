@@ -1,0 +1,107 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Resources/Fonts/fnt_dano.tres" type="DynamicFont" id=1]
+
+[sub_resource type="GDScript" id=1]
+
+resource_name = "str_damage"
+script/source = "extends Label
+
+var eu = self
+var posicao_inicial = Vector2()
+var vetor = Vector2()
+var direcao_do_movimento = 1
+var deslocamento = 20
+func _ready():
+	self.queue_free()
+	randomize()
+	vetor.x = rand_range(10, 40) * direcao_do_movimento
+	vetor.y = -rand_range(20, 65)
+	posicao_inicial = self.rect_global_position
+	
+	_tween_fase1()
+	pass
+
+func _tween_fase1():
+	$Tween.interpolate_property(self, 'rect_global_position', self.rect_global_position, self.rect_global_position + vetor, rand_range(0.25, 0.4), Tween.TRANS_QUAD, Tween.EASE_OUT)
+	$Tween.start()
+
+func _tween_fase2():
+	var tempo_da_descida = rand_range(0.6, 0.7)
+	var atraso_fade = rand_range(0.1, 0.2)
+	$Tween.interpolate_property(self, 'rect_global_position:x', self.rect_global_position.x, posicao_inicial.x + 2*vetor.x, tempo_da_descida, Tween.TRANS_QUAD, Tween.EASE_OUT)
+	$Tween.start()
+	$TweenAuxiliar.interpolate_property(self, 'rect_global_position:y', self.rect_global_position.y, posicao_inicial.y - rand_range(-5, 25) - deslocamento, tempo_da_descida, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+	$TweenAuxiliar.start()
+	$TweenFade.interpolate_property(self, 'modulate:a', self.modulate.a, 0, tempo_da_descida - atraso_fade, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT, atraso_fade + 0.1)
+	$TweenFade.start()
+	
+func _on_Tween_tween_completed(object, key):
+	$Tween.disconnect('tween_completed', eu, '_on_Tween_tween_completed')
+	_tween_fase2()
+
+func _on_TweenFade_tween_completed(object, key):
+	self.queue_free()
+"
+_sections_unfolded = [ "Resource" ]
+
+[node name="str_damage" type="Label"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 405.0
+margin_bottom = 80.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.0644674, 0.055542, 0.21875, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_constants/shadow_as_outline = 16384
+text = "0123456789"
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script = SubResource( 1 )
+_sections_unfolded = [ "BBCode", "Rect", "Visibility", "custom_colors", "custom_constants", "custom_fonts" ]
+
+[node name="Tween" type="Tween" parent="." index="0"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="TweenAuxiliar" type="Tween" parent="." index="1"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[node name="TweenFade" type="Tween" parent="." index="2"]
+
+repeat = false
+playback_process_mode = 1
+playback_speed = 1.0
+playback/active = false
+playback/repeat = false
+playback/speed = 1.0
+
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+
+[connection signal="tween_completed" from="TweenFade" to="." method="_on_TweenFade_tween_completed"]
+
+
